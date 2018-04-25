@@ -1,7 +1,7 @@
 **THIS PROJECT IS NOT AFFILIATED WITH FORTNITE IN ANY WAY, SHAPE OR FORM.**
 
 # aiofortnite
-aiofortnite is a fully async (minus one token generation thread in the background) library for Fortnite. Some of the functions were made with the help of https://github.com/nicolaskenner/python-fortnite-api-wrapper/. **This project will always be evolving with new features, feel free to make PR's to help.**
+aiofortnite is a fully async library for Fortnite. Some of the functions were made with the help of https://github.com/nicolaskenner/python-fortnite-api-wrapper/. **This project will always be evolving with new features, feel free to make PR's to help.**
 
 ## Installation
 Installation as as simple as (assuming `py` is your default Python 3.5.3+ interpreter):
