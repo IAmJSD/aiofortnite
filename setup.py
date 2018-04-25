@@ -10,7 +10,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="aiofortnite",
-    version="0.12",
+    version="0.21",
     description="A asyncio wrapper for Fortnite.",
     author="Jake Gealer",
     author_email="jake@gealer.email",
@@ -18,13 +18,12 @@ setup(
     url="https://github.com/JakeMakesStuff/aiofortnite",
     packages=find_packages(exclude=('tests',)),
     install_requires=[
-        "aiohttp",
-        "requests"
+        "aiohttp"
     ],
     include_package_data=True,
-    license="GPLv3",
+    license="MPL-2.0",
     classifiers=[
-        "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+        "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3.5",
         "Programming Language :: Python :: 3.6",
