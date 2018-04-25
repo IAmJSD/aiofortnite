@@ -18,12 +18,25 @@ import async_timeout
 
 class Client:
 
-    def __init__(self, email, password, launcher_token, fortnite_token):
+    def __init__(
+        self,
+        email,
+        password,
+        launcher_token,
+        fortnite_token,
+        loop=None
+    ):
         self.email = email
         self.password = password
-        self.tokens = SelfRenewingTokens(
-            launcher_token, fortnite_token, email, password
-        )
+        if loop:
+            self.tokens = SelfRenewingTokens(
+                launcher_token, fortnite_token, email, password,
+                loop
+            )
+        else:
+            self.tokens = SelfRenewingTokens(
+                launcher_token, fortnite_token, email, password
+            )
     # Initialises the client.
 
     async def get_user(self, username, stats=True):
