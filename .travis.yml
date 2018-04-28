@@ -7,4 +7,4 @@ fail_fast: true
 before_install:
   - pip install pycodestyle
 script:
-- pycodestyle .
+  - pycodestyle .
