@@ -1,4 +1,5 @@
 [![Discord](https://img.shields.io/discord/430802154022895616.svg?logo=discord)](https://discord.gg/AEfWXP9)
+[![Build Status](https://travis-ci.org/JakeMakesStuff/aiofortnite.svg?branch=master)](https://travis-ci.org/JakeMakesStuff/aiofortnite)
 
 **THIS PROJECT IS NOT AFFILIATED WITH FORTNITE IN ANY WAY, SHAPE OR FORM.**
 
