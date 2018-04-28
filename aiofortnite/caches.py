@@ -52,4 +52,5 @@ class UserCacheCorpse:
 
         return user
 
+
 UserCache = UserCacheCorpse()
