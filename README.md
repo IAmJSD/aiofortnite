@@ -1,3 +1,5 @@
+[![Discord](https://img.shields.io/discord/430802154022895616.svg?logo=discord)](https://discord.gg/AEfWXP9)
+
 **THIS PROJECT IS NOT AFFILIATED WITH FORTNITE IN ANY WAY, SHAPE OR FORM.**
 
 # aiofortnite
@@ -124,9 +126,3 @@ async for news in fortnite_cli.get_news():
     print(news.body)
     print(news.image)
 ```
-
-# Help
-If you need any additional help you can do one of the following:
-- Add me on Discord and I'll DM you right away. - `JakeMakesStuff#0001`
-- Join SSL. - https://discord.me/ssl
-- Create a issue here.
