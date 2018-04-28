@@ -80,8 +80,29 @@ class Client:
         else:
             m = mode
 
+        mode_key = {
+            Modes.all: "_p",
+            Modes.squad: "_p9",
+            Modes.solo: "_p2",
+            Modes.duo: "_p10"
+        }
+        try:
+            m = mode_key[m]
+        except KeyError:
+            return
+
+        platform_key = {
+            Platforms.pc: "pc",
+            Platforms.ps4: "ps4",
+            Platforms.xbox_one: "xb1"
+        }
+        try:
+            p = platform_key[platform]
+        except KeyError:
+            return
+
         url = leaderboards_api.format(
-            platform, m
+            p, m
         )
 
         params = {

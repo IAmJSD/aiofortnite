@@ -67,40 +67,36 @@ Users can have the following attributes:
 - `id` - The users user ID.
 - `value` - This is the users value. This is `None` unless it is fetched from the leaderboards.
 - `rank` - This is the users rank. This is `None` unless it is fetched from the leaderboards.
-- `stats` - Described below. Can be disabled in any function handling users with `stats=False`.
+- `stats` - This is a instance of `aiofortnite.abc.UserStats`. More information is listed below.
 
 ## Stats
 
-Stats have the following attributes repersenting the platforms:
-- `pc`
-- `ps4`
-- `xbox_one`
-
-From here, each platform has the following modes as its attributes:
-- `squad`
-- `solo`
-- `duo`
-- `all`
-
-These modes have the following attributes:
-- `score`
-- `matches`
-- `time`
-- `kills`
-- `wins`
-- `top3`
-- `top5`
-- `top6`
-- `top10`
-- `top12`
-- `top25`
-
-Therefore we can interface with the user like:
+Stats can be fetched as a JSON object. Firstly, we will define the mode and platform:
 ```py
-print(
-    "The amount of kills the user has on PC is: {}".format(user.stats.pc.all.kills)
-)
+mode = None
+# ----- Modes -----
+# None = All modes.
+# aiofortnite.Modes.all = Only show stats for all of them combined.
+# aiofortnite.Modes.duo = Only show stats for the duo mode.
+# aiofortnite.Modes.solo = Only show stats for the solo mode.
+# aiofortnite.Modes.squad = Only show stats for the squad mode.
+# -----------------
+
+platform = None
+# ----- Platforms -----
+# None = All platforms.
+# aiofortnite.Platforms.pc = Only show stats for the PC platform.
+# aiofortnite.Platforms.ps4 = Only show stats for the PS4 platform.
+# aiofortnite.Platforms.xbox_one = Only show stats for the XB1 platform.
+# aiofortnite.Platforms.other = Only show stats for platforms not implemented yet.
+# ---------------------
 ```
+
+We can then run `user.stats.get(mode=mode, platform=platform)` to get the user stats. They will be formatted so that the root keys in the JSON are the gamemodes and the rest of the stats are keys inside of these. For instance (thanks Elliot [SpaceEll] for giving your username so I could test):
+```json
+{"duo": {"score": 85866, "matches": 417, "top12": 111, "wins": 18, "time": 1907, "top5": 49, "kills": 573}, "squad": {"score": 172508, "top3": 104, "kills": 851, "matches": 618, "time": 3810, "top6": 160, "wins": 59}, "solo": {"score": 61896, "kills": 530, "matches": 422, "time": 1446, "wins": 5, "top10": 51, "top25": 105}, "all": {"score": 320270, "matches": 1457, "top12": 111, "wins": 82, "time": 7163, "top5": 49, "kills": 1954, "top3": 104, "top6": 160, "top10": 51, "top25": 105}}
+```
+If you are getting stats for a specific platform, they will only be the stats for that platform. If not, they will be combined with the other platforms.
 
 ## Leaderboards
 Leaderboards are very simple to use. Firstly, we will need to import some classes from aiofortnite:

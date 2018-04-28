@@ -10,7 +10,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="aiofortnite",
-    version="0.21",
+    version="0.30",
     description="A asyncio wrapper for Fortnite.",
     author="Jake Gealer",
     author_email="jake@gealer.email",
