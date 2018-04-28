@@ -11,6 +11,8 @@ from .selfrenewingtokens import SelfRenewingTokens
 from .urls import user_lookup_api, br_stats_api, leaderboards_api,\
    account_id_info_api, news_api, status_api
 from .abc import User, Platforms, Modes, News
+from .caches import UserCache
+import asyncio
 import aiohttp
 import async_timeout
 # Imports go here.
@@ -24,22 +26,23 @@ class Client:
         password,
         launcher_token,
         fortnite_token,
-        loop=None
+        loop=asyncio.get_event_loop()
     ):
         self.email = email
         self.password = password
-        if loop:
-            self.tokens = SelfRenewingTokens(
-                launcher_token, fortnite_token, email, password,
-                loop
-            )
-        else:
-            self.tokens = SelfRenewingTokens(
-                launcher_token, fortnite_token, email, password
-            )
+        self.tokens = SelfRenewingTokens(
+            launcher_token, fortnite_token, email, password,
+            loop
+        )
+        self.loop = loop
     # Initialises the client.
 
     async def get_user(self, username, stats=True):
+
+        cached_user = UserCache.get(username)
+        if cached_user:
+            return cached_user
+
         try:
             async with aiohttp.ClientSession() as client:
                 async with client.get(
@@ -63,7 +66,9 @@ class Client:
                         stats_json = await response.json()
                 else:
                     stats_json = None
-            return User(username, user_id, stats_json)
+            u = User(username, user_id, stats_json)
+            UserCache.add(u, 900, self.loop)
+            return u
         except BaseException:
             return None
     # Tries to get a user by their username.
@@ -120,7 +125,14 @@ class Client:
 
             username = id2username[_id]
 
+            cached_user = UserCache.get(username)
+            if cached_user:
+                cached_user.rank = rank
+                cached_user.value = value
+                return cached_user
+
             user = await self.get_user(username, stats=stats)
+            UserCache.add(user, 900, self.loop)
             if user:
                 user.rank = rank
                 user.value = value

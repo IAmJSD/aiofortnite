@@ -25,7 +25,7 @@ class SelfRenewingTokens:
         fortnite_token,
         email,
         password,
-        loop=asyncio.get_event_loop()
+        loop
     ):
         self.launcher_token = launcher_token
         self.fortnite_token = fortnite_token
