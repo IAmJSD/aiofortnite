@@ -31,7 +31,7 @@ class SelfRenewingTokens:
         self.fortnite_token = fortnite_token
         logger.info("Logging in to Fortnite.")
         loop.run_until_complete(self.init_token_fetch(email, password))
-        asyncio.ensure_future(self.token_refresh_loop(), loop=loop)
+        loop.create_task(self.token_refresh_loop())
 
     async def init_token_fetch(self, email, password):
         async with aiohttp.ClientSession() as client:

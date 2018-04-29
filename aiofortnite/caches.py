@@ -28,7 +28,7 @@ class UserCacheCorpse:
             except BaseException:
                 pass
 
-        asyncio.ensure_future(handle_cache_flushing(), loop=loop)
+        loop.create_task(handle_cache_flushing())
 
     def get(self, username):
         user = self.cache.get(username.lower())
