@@ -8,6 +8,8 @@ This file contains classes which are used across the project.
 '''
 
 import sqlite3
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
 # Imports go here.
 
 
@@ -99,65 +101,70 @@ class UserStats:
         self.db.commit()
         cursor.close()
 
-    def get(self, mode=None, platform=None):
-        sql_parts = []
-        sql_tuple = ()
+    async def get(self, mode=None, platform=None):
+        def non_async_get():
+            sql_parts = []
+            sql_tuple = ()
 
-        x = mode and mode != "all"
+            x = mode and mode != "all"
 
-        if x:
-            sql_parts.append("mode = ?")
-            sql_tuple += mode,
+            if x:
+                sql_parts.append("mode = ?")
+                sql_tuple += mode,
 
-        if platform:
-            sql_parts.append("platform = ?")
-            sql_tuple += platform,
+            if platform:
+                sql_parts.append("platform = ?")
+                sql_tuple += platform,
 
-        if len(sql_parts) > 0:
-            sql = "SELECT * FROM stats WHERE {}".format(
-                " AND ".join(sql_parts)
-            )
-        else:
-            sql = "SELECT * FROM stats"
+            if len(sql_parts) > 0:
+                sql = "SELECT * FROM stats WHERE {}".format(
+                    " AND ".join(sql_parts)
+                )
+            else:
+                sql = "SELECT * FROM stats"
 
-        cursor = self.db.cursor()
-        cursor.execute(sql, sql_tuple)
+            cursor = self.db.cursor()
+            cursor.execute(sql, sql_tuple)
 
-        results = cursor.fetchall()
-        cursor.close()
+            results = cursor.fetchall()
+            cursor.close()
 
-        if len(results) == 0:
-            return
+            if len(results) == 0:
+                return
 
-        _json = {}
+            _json = {}
 
-        for r in results:
-            s = Stat(r)
-            try:
-                _json[s.mode][s.name] += s.value
-            except KeyError:
+            for r in results:
+                s = Stat(r)
                 try:
-                    _json[s.mode][s.name] = s.value
+                    _json[s.mode][s.name] += s.value
                 except KeyError:
-                    _json[s.mode] = {}
-                    _json[s.mode][s.name] = s.value
+                    try:
+                        _json[s.mode][s.name] = s.value
+                    except KeyError:
+                        _json[s.mode] = {}
+                        _json[s.mode][s.name] = s.value
 
-        if x:
-            return _json
+            if x:
+                return _json
 
-        _all = {}
-        for k in _json:
-            for c in _json[k]:
-                try:
-                    _all[c] += _json[k][c]
-                except KeyError:
-                    _all[c] = _json[k][c]
+            _all = {}
+            for k in _json:
+                for c in _json[k]:
+                    try:
+                        _all[c] += _json[k][c]
+                    except KeyError:
+                        _all[c] = _json[k][c]
 
-        if not mode:
-            _json["all"] = _all
-            return _json
-        else:
-            return {"all": _all}
+            if not mode:
+                _json["all"] = _all
+                return _json
+            else:
+                return {"all": _all}
+
+        return (await asyncio.get_event_loop().run_in_executor(
+            ThreadPoolExecutor(), non_async_get
+        ))
 
 # The ABC class for all user stats.
 

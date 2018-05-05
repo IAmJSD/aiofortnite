@@ -95,7 +95,7 @@ platform = None
 # ---------------------
 ```
 
-We can then run `user.stats.get(mode=mode, platform=platform)` to get the user stats. They will be formatted so that the root keys in the JSON are the gamemodes and the rest of the stats are keys inside of these. For instance (thanks Elliot [SpaceEll] for giving your username so I could test):
+We can then run `await user.stats.get(mode=mode, platform=platform)` to get the user stats. They will be formatted so that the root keys in the JSON are the gamemodes and the rest of the stats are keys inside of these. For instance (thanks Elliot [SpaceEll] for giving your username so I could test):
 ```json
 {"duo": {"score": 85866, "matches": 417, "top12": 111, "wins": 18, "time": 1907, "top5": 49, "kills": 573}, "squad": {"score": 172508, "top3": 104, "kills": 851, "matches": 618, "time": 3810, "top6": 160, "wins": 59}, "solo": {"score": 61896, "kills": 530, "matches": 422, "time": 1446, "wins": 5, "top10": 51, "top25": 105}, "all": {"score": 320270, "matches": 1457, "top12": 111, "wins": 82, "time": 7163, "top5": 49, "kills": 1954, "top3": 104, "top6": 160, "top10": 51, "top25": 105}}
 ```
