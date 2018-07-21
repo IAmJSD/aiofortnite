@@ -32,7 +32,7 @@ class Stat:
 class UserStats:
     def __init__(self, stats_json):
 
-        self.db = sqlite3.connect(":memory:")
+        self.db = sqlite3.connect(":memory:", check_same_thread=False)
 
         cursor = self.db.cursor()
 
